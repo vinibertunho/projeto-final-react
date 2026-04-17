@@ -1,0 +1,196 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PapelUsuario {
+  ADMIN
+  EDITOR
+  LEITOR
+}
+
+enum Idioma {
+  PT_BR @map("pt-BR")
+  EN    @map("en")
+}
+
+enum TipoConteudo {
+  RESUMO
+  ANALISE
+  CURIOSIDADE
+  DICA
+}
+
+enum LetraAlternativa {
+  A
+  B
+  C
+  D
+  E
+}
+
+enum DificuldadeQuestao {
+  FACIL
+  MEDIA
+  DIFICIL
+}
+
+enum StatusTentativa {
+  EM_ANDAMENTO
+  FINALIZADO
+  CANCELADO
+}
+
+model Usuario {
+  id              String              @id @default(uuid()) @db.Uuid
+  nome            String              @db.VarChar
+  email           String              @unique @db.VarChar
+  senhaHash       String              @map("senha_hash") @db.VarChar
+  papel           PapelUsuario        @default(LEITOR)
+  idiomaPreferido Idioma              @default(PT_BR) @map("idioma_preferido")
+  ativo           Boolean             @default(true)
+  criadoEm        DateTime            @default(now()) @map("criado_em") @db.Timestamp()
+  atualizadoEm    DateTime            @updatedAt @map("atualizado_em") @db.Timestamp()
+  equipes         EquipeMembro[]
+  conteudos       Conteudo[]
+  tentativas      TentativaSimulado[]
+
+  @@map("usuarios")
+}
+
+model Equipe {
+  id        String         @id @default(uuid()) @db.Uuid
+  nome      String         @db.VarChar
+  descricao String?        @db.Text
+  criadoEm  DateTime       @default(now()) @map("criado_em") @db.Timestamp()
+  membros   EquipeMembro[]
+  livros    Livro[]
+
+  @@map("equipes")
+}
+
+model EquipeMembro {
+  id        String   @id @default(uuid()) @db.Uuid
+  equipeId  String   @map("equipe_id") @db.Uuid
+  usuarioId String   @map("usuario_id") @db.Uuid
+  funcao    String   @db.VarChar
+  criadoEm  DateTime @default(now()) @map("criado_em") @db.Timestamp()
+  equipe    Equipe   @relation(fields: [equipeId], references: [id], onDelete: Cascade)
+  usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+
+  @@map("equipe_membros")
+}
+
+model Livro {
+  id               String       @id @default(uuid()) @db.Uuid
+  titulo           String       @db.VarChar
+  autor            String       @db.VarChar
+  anoPublicacao    Int?         @map("ano_publicacao")
+  sinopse          String?      @db.Text
+  capaUrl          String?      @map("capa_url") @db.VarChar
+  equipeId         String?      @map("equipe_id") @db.Uuid
+  isLivroPrincipal Boolean      @default(false) @map("is_livro_principal")
+  criadoEm         DateTime     @default(now()) @map("criado_em") @db.Timestamp()
+  atualizadoEm     DateTime     @updatedAt @map("atualizado_em") @db.Timestamp()
+  equipe           Equipe?      @relation(fields: [equipeId], references: [id], onDelete: SetNull)
+  personagens      Personagem[]
+  conteudos        Conteudo[]
+  simulados        Simulado[]
+
+  @@map("livros")
+}
+
+model Personagem {
+  id        String   @id @default(uuid()) @db.Uuid
+  livroId   String   @map("livro_id") @db.Uuid
+  nome      String   @db.VarChar
+  descricao String?  @db.Text
+  criadoEm  DateTime @default(now()) @map("criado_em") @db.Timestamp()
+  livro     Livro    @relation(fields: [livroId], references: [id], onDelete: Cascade)
+
+  @@map("personagens")
+}
+
+model Conteudo {
+  id              String   @id @default(uuid()) @db.Uuid
+  livroId         String   @map("livro_id") @db.Uuid
+  tipo            TipoConteudo
+  idioma          Idioma   @default(PT_BR)
+  titulo          String   @db.VarChar
+  texto           String   @db.Text
+  fonteReferencia String?  @map("fonte_referencia") @db.VarChar
+  autorUsuarioId  String?  @map("autor_usuario_id") @db.Uuid
+  publicado       Boolean  @default(false)
+  criadoEm        DateTime @default(now()) @map("criado_em") @db.Timestamp()
+  atualizadoEm    DateTime @updatedAt @map("atualizado_em") @db.Timestamp()
+  livro           Livro    @relation(fields: [livroId], references: [id], onDelete: Cascade)
+  autor           Usuario? @relation(fields: [autorUsuarioId], references: [id], onDelete: SetNull)
+
+  @@map("conteudos")
+}
+
+model Simulado {
+  id             String              @id @default(uuid()) @db.Uuid
+  livroId        String?             @map("livro_id") @db.Uuid
+  titulo         String              @db.VarChar
+  descricao      String?             @db.Text
+  idioma         Idioma              @default(PT_BR)
+  tempoLimiteMin Int?                @map("tempo_limite_min")
+  ativo          Boolean             @default(true)
+  criadoEm       DateTime            @default(now()) @map("criado_em") @db.Timestamp()
+  livro          Livro?              @relation(fields: [livroId], references: [id], onDelete: SetNull)
+  questoes       Questao[]
+  tentativas     TentativaSimulado[]
+
+  @@map("simulados")
+}
+
+model Questao {
+  id                  String              @id @default(uuid()) @db.Uuid
+  simuladoId          String              @map("simulado_id") @db.Uuid
+  enunciado           String              @db.Text
+  alternativaA        String              @map("alternativa_a") @db.Text
+  alternativaB        String              @map("alternativa_b") @db.Text
+  alternativaC        String              @map("alternativa_c") @db.Text
+  alternativaD        String              @map("alternativa_d") @db.Text
+  alternativaE        String?             @map("alternativa_e") @db.Text
+  gabarito            LetraAlternativa
+  dificuldade         DificuldadeQuestao  @default(MEDIA)
+  comentarioResolucao String?             @map("comentario_resolucao") @db.Text
+  criadoEm            DateTime            @default(now()) @map("criado_em") @db.Timestamp()
+  simulado            Simulado            @relation(fields: [simuladoId], references: [id], onDelete: Cascade)
+  respostas           RespostaTentativa[]
+
+  @@map("questoes")
+}
+
+model TentativaSimulado {
+  id           String              @id @default(uuid()) @db.Uuid
+  simuladoId   String              @map("simulado_id") @db.Uuid
+  usuarioId    String              @map("usuario_id") @db.Uuid
+  iniciadoEm   DateTime            @default(now()) @map("iniciado_em") @db.Timestamp()
+  finalizadoEm DateTime?           @map("finalizado_em") @db.Timestamp()
+  pontuacao    Decimal?            @db.Decimal(5, 2)
+  status       StatusTentativa     @default(EM_ANDAMENTO)
+  simulado     Simulado            @relation(fields: [simuladoId], references: [id], onDelete: Cascade)
+  usuario      Usuario             @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  respostas    RespostaTentativa[]
+
+  @@map("tentativas_simulado")
+}
+
+model RespostaTentativa {
+  id              String            @id @default(uuid()) @db.Uuid
+  tentativaId     String            @map("tentativa_id") @db.Uuid
+  questaoId       String            @map("questao_id") @db.Uuid
+  respostaMarcada LetraAlternativa? @map("resposta_marcada")
+  correta         Boolean?
+  respondidoEm    DateTime          @default(now()) @map("respondido_em") @db.Timestamp()
+  tentativa       TentativaSimulado @relation(fields: [tentativaId], references: [id], onDelete: Cascade)
+  questao         Questao           @relation(fields: [questaoId], references: [id], onDelete: Cascade)
+
+  @@map("respostas_tentativa")
+}
