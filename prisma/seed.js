@@ -79,7 +79,7 @@ async function main() {
             anoPublicacao: 1937,
             sinopse:
                 'A obra retrata a vida de um grupo de menores abandonados que vivem nas ruas de Salvador.',
-            capaUrl: 'https://example.com/capitaes.jpg',
+            capaUrl: 'https://ibb.co/6R0jzHXy.jpg',
             equipeId: equipeAlpha.id,
             isLivroPrincipal: true,
         },
@@ -167,6 +167,93 @@ async function main() {
                 alternativaE: 'Substituir o Padre José Pedro na educação religiosa.',
                 gabarito: 'A',
                 dificuldade: 'FACIL',
+            },
+            
+            {
+                simuladoId: simulado.id,
+                enunciado:
+                    'A obra "Capitães da Areia" insere-se na segunda fase do Modernismo brasileiro (fase regionalista). Qual é a principal denúncia social feita pelo autor no romance?',
+                alternativaA: 'A escravidão nas fazendas de cacau no sul da Bahia.',
+                alternativaB: 'O êxodo rural provocado pela seca no sertão nordestino.',
+                alternativaC:
+                    'O abandono, a marginalização e a violência contra menores em situação de rua em Salvador.',
+                alternativaD: 'A exploração dos trabalhadores nas grandes indústrias paulistas.',
+                alternativaE: 'A corrupção política durante a Era Vargas no Rio de Janeiro.',
+                gabarito: 'C',
+                dificuldade: 'FACIL',
+                comentarioResolucao:
+                    'Jorge Amado denuncia o descaso das autoridades e da sociedade com as crianças em situação de vulnerabilidade.',
+            },
+            {
+                simuladoId: simulado.id,
+                enunciado:
+                    'O personagem Sem-Pernas possui uma estratégia peculiar que o diferencia no grupo para a realização de assaltos. Que tática é essa?',
+                alternativaA:
+                    'Ele finge ser um órfão dócil para se infiltrar na casa de famílias ricas e planejar os roubos de dentro.',
+                alternativaB:
+                    'Ele possui grande força física, sendo o único capaz de arrombar grandes cofres.',
+                alternativaC:
+                    'Ele se disfarça de entregador de mercadorias para assaltar armazéns no porto.',
+                alternativaD:
+                    'Ele atua como capoeirista para distrair a polícia na rua enquanto os outros roubam.',
+                alternativaE: 'Ele suborna os guardas noturnos das grandes propriedades.',
+                gabarito: 'A',
+                dificuldade: 'MEDIA',
+                comentarioResolucao:
+                    'Sem-Pernas explorava sua deficiência física para despertar compaixão, sendo "adotado" temporariamente por famílias ricas apenas para mapear a casa para o bando.',
+            },
+            {
+                simuladoId: simulado.id,
+                enunciado:
+                    'O Padre José Pedro, em sua relação com os Capitães da Areia, destaca-se por:',
+                alternativaA: 'Tentar convertê-los ao protestantismo para salvá-los das ruas.',
+                alternativaB:
+                    'Explorar o trabalho infantil dos meninos em benefício das obras da paróquia.',
+                alternativaC:
+                    'Buscar compreendê-los e ajudá-los de forma genuína, muitas vezes enfrentando a reprovação da hierarquia da Igreja.',
+                alternativaD:
+                    'Ignorar a situação de miséria, focando apenas nos fiéis da elite baiana.',
+                alternativaE: 'Ser o mandante oculto dos furtos realizados pelas crianças.',
+                gabarito: 'C',
+                dificuldade: 'MEDIA',
+                comentarioResolucao:
+                    'Padre José Pedro é a figura religiosa que tenta acolher os meninos com empatia, contrastando com a frieza institucional da Igreja na época.',
+            },
+            {
+                simuladoId: simulado.id,
+                enunciado:
+                    'O personagem Volta Seca nutre uma profunda admiração por uma figura histórica, o que acaba definindo o seu destino no final da narrativa. Quem é essa figura e qual é o rumo tomado pelo menino?',
+                alternativaA:
+                    'Antônio Conselheiro; ele funda uma nova comunidade religiosa no interior.',
+                alternativaB:
+                    'Lampião; ele abandona Salvador e se junta a um bando de cangaceiros no sertão.',
+                alternativaC: 'Getúlio Vargas; ele entra para a política sindicalista no porto.',
+                alternativaD:
+                    'Zumbi dos Palmares; ele lidera uma revolta popular contra a polícia local.',
+                alternativaE:
+                    'Luís Carlos Prestes; ele se alista na Coluna Prestes e viaja pelo país.',
+                gabarito: 'B',
+                dificuldade: 'MEDIA',
+                comentarioResolucao:
+                    'Volta Seca sonhava em ser cangaceiro e considerava Lampião seu herói. Ao final, realiza seu desejo indo para o cangaço.',
+            },
+            {
+                simuladoId: simulado.id,
+                enunciado:
+                    'João José, conhecido como Professor, é o intelectual do grupo. Qual é o destino desse personagem no desfecho da obra?',
+                alternativaA:
+                    'Torna-se um grande advogado criminalista em Salvador para defender menores infratores.',
+                alternativaB:
+                    'Viaja para o Rio de Janeiro e se consagra como um pintor de sucesso, retratando a vida dos meninos de rua.',
+                alternativaC:
+                    'Morre tragicamente durante um violento confronto com a polícia no trapiche.',
+                alternativaD:
+                    'Assume a liderança dos Capitães da Areia após a saída de Pedro Bala.',
+                alternativaE: 'É adotado por um juiz e passa a reprimir os antigos companheiros.',
+                gabarito: 'B',
+                dificuldade: 'DIFICIL',
+                comentarioResolucao:
+                    'O Professor canaliza seu talento artístico e vai para o Sul (Rio de Janeiro), usando a arte para dar visibilidade aos marginalizados.',
             },
         ],
     });
