@@ -45,7 +45,7 @@ enum StatusTentativa {
 }
 
 model Usuario {
-  id              String              @id @default(uuid()) @db.Uuid
+  id              Int                 @id @default(autoincrement())
   nome            String              @db.VarChar
   email           String              @unique @db.VarChar
   senhaHash       String              @map("senha_hash") @db.VarChar
@@ -62,7 +62,7 @@ model Usuario {
 }
 
 model Equipe {
-  id        String         @id @default(uuid()) @db.Uuid
+  id        Int            @id @default(autoincrement())
   nome      String         @db.VarChar
   descricao String?        @db.Text
   criadoEm  DateTime       @default(now()) @map("criado_em") @db.Timestamp()
@@ -73,9 +73,9 @@ model Equipe {
 }
 
 model EquipeMembro {
-  id        String   @id @default(uuid()) @db.Uuid
-  equipeId  String   @map("equipe_id") @db.Uuid
-  usuarioId String   @map("usuario_id") @db.Uuid
+  id        Int      @id @default(autoincrement())
+  equipeId  Int      @map("equipe_id")
+  usuarioId Int      @map("usuario_id")
   funcao    String   @db.VarChar
   criadoEm  DateTime @default(now()) @map("criado_em") @db.Timestamp()
   equipe    Equipe   @relation(fields: [equipeId], references: [id], onDelete: Cascade)
@@ -85,13 +85,13 @@ model EquipeMembro {
 }
 
 model Livro {
-  id               String       @id @default(uuid()) @db.Uuid
+  id               Int          @id @default(autoincrement())
   titulo           String       @db.VarChar
   autor            String       @db.VarChar
   anoPublicacao    Int?         @map("ano_publicacao")
   sinopse          String?      @db.Text
   capaUrl          String?      @map("capa_url") @db.VarChar
-  equipeId         String?      @map("equipe_id") @db.Uuid
+  equipeId         Int?         @map("equipe_id")
   isLivroPrincipal Boolean      @default(false) @map("is_livro_principal")
   criadoEm         DateTime     @default(now()) @map("criado_em") @db.Timestamp()
   atualizadoEm     DateTime     @updatedAt @map("atualizado_em") @db.Timestamp()
@@ -104,8 +104,8 @@ model Livro {
 }
 
 model Personagem {
-  id        String   @id @default(uuid()) @db.Uuid
-  livroId   String   @map("livro_id") @db.Uuid
+  id        Int      @id @default(autoincrement())
+  livroId   Int      @map("livro_id")
   nome      String   @db.VarChar
   descricao String?  @db.Text
   criadoEm  DateTime @default(now()) @map("criado_em") @db.Timestamp()
@@ -115,14 +115,14 @@ model Personagem {
 }
 
 model Conteudo {
-  id              String   @id @default(uuid()) @db.Uuid
-  livroId         String   @map("livro_id") @db.Uuid
+  id              Int      @id @default(autoincrement())
+  livroId         Int      @map("livro_id")
   tipo            TipoConteudo
   idioma          Idioma   @default(PT_BR)
   titulo          String   @db.VarChar
   texto           String   @db.Text
   fonteReferencia String?  @map("fonte_referencia") @db.VarChar
-  autorUsuarioId  String?  @map("autor_usuario_id") @db.Uuid
+  autorUsuarioId  Int?     @map("autor_usuario_id")
   publicado       Boolean  @default(false)
   criadoEm        DateTime @default(now()) @map("criado_em") @db.Timestamp()
   atualizadoEm    DateTime @updatedAt @map("atualizado_em") @db.Timestamp()
@@ -133,8 +133,8 @@ model Conteudo {
 }
 
 model Simulado {
-  id             String              @id @default(uuid()) @db.Uuid
-  livroId        String?             @map("livro_id") @db.Uuid
+  id             Int                 @id @default(autoincrement())
+  livroId        Int?                @map("livro_id")
   titulo         String              @db.VarChar
   descricao      String?             @db.Text
   idioma         Idioma              @default(PT_BR)
@@ -149,8 +149,8 @@ model Simulado {
 }
 
 model Questao {
-  id                  String              @id @default(uuid()) @db.Uuid
-  simuladoId          String              @map("simulado_id") @db.Uuid
+  id                  Int                 @id @default(autoincrement())
+  simuladoId          Int                 @map("simulado_id")
   enunciado           String              @db.Text
   alternativaA        String              @map("alternativa_a") @db.Text
   alternativaB        String              @map("alternativa_b") @db.Text
@@ -168,9 +168,9 @@ model Questao {
 }
 
 model TentativaSimulado {
-  id           String              @id @default(uuid()) @db.Uuid
-  simuladoId   String              @map("simulado_id") @db.Uuid
-  usuarioId    String              @map("usuario_id") @db.Uuid
+  id           Int                 @id @default(autoincrement())
+  simuladoId   Int                 @map("simulado_id")
+  usuarioId    Int                 @map("usuario_id")
   iniciadoEm   DateTime            @default(now()) @map("iniciado_em") @db.Timestamp()
   finalizadoEm DateTime?           @map("finalizado_em") @db.Timestamp()
   pontuacao    Decimal?            @db.Decimal(5, 2)
@@ -183,9 +183,9 @@ model TentativaSimulado {
 }
 
 model RespostaTentativa {
-  id              String            @id @default(uuid()) @db.Uuid
-  tentativaId     String            @map("tentativa_id") @db.Uuid
-  questaoId       String            @map("questao_id") @db.Uuid
+  id              Int               @id @default(autoincrement())
+  tentativaId     Int               @map("tentativa_id")
+  questaoId       Int               @map("questao_id")
   respostaMarcada LetraAlternativa? @map("resposta_marcada")
   correta         Boolean?
   respondidoEm    DateTime          @default(now()) @map("respondido_em") @db.Timestamp()
