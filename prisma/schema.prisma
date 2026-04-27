@@ -46,14 +46,14 @@ enum StatusTentativa {
 
 model Usuario {
   id              Int                 @id @default(autoincrement())
-  nome            String              @db.VarChar
-  email           String              @unique @db.VarChar
-  senhaHash       String              @map("senha_hash") @db.VarChar
+  nome            String
+  email           String              @unique
+  senhaHash       String              @map("senha_hash")
   papel           PapelUsuario        @default(LEITOR)
   idiomaPreferido Idioma              @default(PT_BR) @map("idioma_preferido")
   ativo           Boolean             @default(true)
-  criadoEm        DateTime            @default(now()) @map("criado_em") @db.Timestamp()
-  atualizadoEm    DateTime            @updatedAt @map("atualizado_em") @db.Timestamp()
+  criadoEm        DateTime            @default(now()) @map("criado_em")
+  atualizadoEm    DateTime            @updatedAt @map("atualizado_em")
   equipes         EquipeMembro[]
   conteudos       Conteudo[]
   tentativas      TentativaSimulado[]
@@ -63,9 +63,9 @@ model Usuario {
 
 model Equipe {
   id        Int            @id @default(autoincrement())
-  nome      String         @db.VarChar
-  descricao String?        @db.Text
-  criadoEm  DateTime       @default(now()) @map("criado_em") @db.Timestamp()
+  nome      String
+  descricao String?
+  criadoEm  DateTime       @default(now()) @map("criado_em")
   membros   EquipeMembro[]
   livros    Livro[]
 
@@ -76,8 +76,8 @@ model EquipeMembro {
   id        Int      @id @default(autoincrement())
   equipeId  Int      @map("equipe_id")
   usuarioId Int      @map("usuario_id")
-  funcao    String   @db.VarChar
-  criadoEm  DateTime @default(now()) @map("criado_em") @db.Timestamp()
+  funcao    String
+  criadoEm  DateTime @default(now()) @map("criado_em")
   equipe    Equipe   @relation(fields: [equipeId], references: [id], onDelete: Cascade)
   usuario   Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
 
@@ -86,15 +86,15 @@ model EquipeMembro {
 
 model Livro {
   id               Int          @id @default(autoincrement())
-  titulo           String       @db.VarChar
-  autor            String       @db.VarChar
+  titulo           String
+  autor            String
   anoPublicacao    Int?         @map("ano_publicacao")
-  sinopse          String?      @db.Text
-  capaUrl          String?      @map("capa_url") @db.VarChar
+  sinopse          String?
+  capaUrl          String?      @map("capa_url")
   equipeId         Int?         @map("equipe_id")
   isLivroPrincipal Boolean      @default(false) @map("is_livro_principal")
-  criadoEm         DateTime     @default(now()) @map("criado_em") @db.Timestamp()
-  atualizadoEm     DateTime     @updatedAt @map("atualizado_em") @db.Timestamp()
+  criadoEm         DateTime     @default(now()) @map("criado_em")
+  atualizadoEm     DateTime     @updatedAt @map("atualizado_em")
   equipe           Equipe?      @relation(fields: [equipeId], references: [id], onDelete: SetNull)
   personagens      Personagem[]
   conteudos        Conteudo[]
@@ -106,9 +106,9 @@ model Livro {
 model Personagem {
   id        Int      @id @default(autoincrement())
   livroId   Int      @map("livro_id")
-  nome      String   @db.VarChar
-  descricao String?  @db.Text
-  criadoEm  DateTime @default(now()) @map("criado_em") @db.Timestamp()
+  nome      String
+  descricao String?
+  criadoEm  DateTime @default(now()) @map("criado_em")
   livro     Livro    @relation(fields: [livroId], references: [id], onDelete: Cascade)
 
   @@map("personagens")
@@ -119,13 +119,13 @@ model Conteudo {
   livroId         Int      @map("livro_id")
   tipo            TipoConteudo
   idioma          Idioma   @default(PT_BR)
-  titulo          String   @db.VarChar
-  texto           String   @db.Text
-  fonteReferencia String?  @map("fonte_referencia") @db.VarChar
+  titulo          String
+  texto           String
+  fonteReferencia String?  @map("fonte_referencia")
   autorUsuarioId  Int?     @map("autor_usuario_id")
   publicado       Boolean  @default(false)
-  criadoEm        DateTime @default(now()) @map("criado_em") @db.Timestamp()
-  atualizadoEm    DateTime @updatedAt @map("atualizado_em") @db.Timestamp()
+  criadoEm        DateTime @default(now()) @map("criado_em")
+  atualizadoEm    DateTime @updatedAt @map("atualizado_em")
   livro           Livro    @relation(fields: [livroId], references: [id], onDelete: Cascade)
   autor           Usuario? @relation(fields: [autorUsuarioId], references: [id], onDelete: SetNull)
 
@@ -135,12 +135,12 @@ model Conteudo {
 model Simulado {
   id             Int                 @id @default(autoincrement())
   livroId        Int?                @map("livro_id")
-  titulo         String              @db.VarChar
-  descricao      String?             @db.Text
+  titulo         String
+  descricao      String?
   idioma         Idioma              @default(PT_BR)
   tempoLimiteMin Int?                @map("tempo_limite_min")
   ativo          Boolean             @default(true)
-  criadoEm       DateTime            @default(now()) @map("criado_em") @db.Timestamp()
+  criadoEm       DateTime            @default(now()) @map("criado_em")
   livro          Livro?              @relation(fields: [livroId], references: [id], onDelete: SetNull)
   questoes       Questao[]
   tentativas     TentativaSimulado[]
@@ -151,16 +151,16 @@ model Simulado {
 model Questao {
   id                  Int                 @id @default(autoincrement())
   simuladoId          Int                 @map("simulado_id")
-  enunciado           String              @db.Text
-  alternativaA        String              @map("alternativa_a") @db.Text
-  alternativaB        String              @map("alternativa_b") @db.Text
-  alternativaC        String              @map("alternativa_c") @db.Text
-  alternativaD        String              @map("alternativa_d") @db.Text
-  alternativaE        String?             @map("alternativa_e") @db.Text
+  enunciado           String
+  alternativaA        String              @map("alternativa_a")
+  alternativaB        String              @map("alternativa_b")
+  alternativaC        String              @map("alternativa_c")
+  alternativaD        String              @map("alternativa_d")
+  alternativaE        String?             @map("alternativa_e")
   gabarito            LetraAlternativa
   dificuldade         DificuldadeQuestao  @default(MEDIA)
-  comentarioResolucao String?             @map("comentario_resolucao") @db.Text
-  criadoEm            DateTime            @default(now()) @map("criado_em") @db.Timestamp()
+  comentarioResolucao String?             @map("comentario_resolucao")
+  criadoEm            DateTime            @default(now()) @map("criado_em")
   simulado            Simulado            @relation(fields: [simuladoId], references: [id], onDelete: Cascade)
   respostas           RespostaTentativa[]
 
@@ -171,8 +171,8 @@ model TentativaSimulado {
   id           Int                 @id @default(autoincrement())
   simuladoId   Int                 @map("simulado_id")
   usuarioId    Int                 @map("usuario_id")
-  iniciadoEm   DateTime            @default(now()) @map("iniciado_em") @db.Timestamp()
-  finalizadoEm DateTime?           @map("finalizado_em") @db.Timestamp()
+  iniciadoEm   DateTime            @default(now()) @map("iniciado_em")
+  finalizadoEm DateTime?           @map("finalizado_em")
   pontuacao    Decimal?            @db.Decimal(5, 2)
   status       StatusTentativa     @default(EM_ANDAMENTO)
   simulado     Simulado            @relation(fields: [simuladoId], references: [id], onDelete: Cascade)
@@ -188,7 +188,7 @@ model RespostaTentativa {
   questaoId       Int               @map("questao_id")
   respostaMarcada LetraAlternativa? @map("resposta_marcada")
   correta         Boolean?
-  respondidoEm    DateTime          @default(now()) @map("respondido_em") @db.Timestamp()
+  respondidoEm    DateTime          @default(now()) @map("respondido_em")
   tentativa       TentativaSimulado @relation(fields: [tentativaId], references: [id], onDelete: Cascade)
   questao         Questao           @relation(fields: [questaoId], references: [id], onDelete: Cascade)
 
